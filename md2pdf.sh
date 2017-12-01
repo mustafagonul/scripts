@@ -6,3 +6,4 @@ do
   pdfname=${basename}.pdf
   pandoc -s -o $pdfname $filename
 done
+
