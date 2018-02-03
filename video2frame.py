@@ -26,8 +26,12 @@ def to_grayscale(arr):
         return arr
 
 def normalize(arr):
-    rng = arr.max()-arr.min()
+    rng = arr.max() - arr.min()
     amin = arr.min()
+
+    if rng == 0:
+      return arr - amin
+
     return (arr-amin)*255/rng
 
 # Check for parameter
@@ -41,13 +45,13 @@ vidcap = cv2.VideoCapture(sys.argv[1])
 
 # Variables
 count = 0
-success = True
-image = None
 last_image = None
 
 # Loop
-while success:
+while True:
   success, image = vidcap.read()
+  if success == False:
+    break
 
   if last_image is None:
     cv2.imwrite("frame%d.jpg" % count, image)     # save frame as JPEG file
