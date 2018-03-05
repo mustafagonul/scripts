@@ -1,7 +1,6 @@
 #!/bin/bash
 
-CURRENT_DIR= $(pwd)
-SESSION_NAME=$(basename ${CURRENT_DIR})
+SESSION_NAME=${PWD/*\//}
 
 
 # Create the session
