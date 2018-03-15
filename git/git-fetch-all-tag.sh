@@ -30,13 +30,29 @@ for DIR in ${GITDIR}/* ; do
   BEHIND=$(git rev-list HEAD.."${BRANCH_NAME}"@{upstream} 2>/dev/null | wc -l)
   echo -e "${BLUE}Behind = ${BEHIND// /}${NC}"
 
-  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' && \
-        -n $(git status ${FLAGS} | grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
-		echo -e "${LIGHT_RED}There are some changes. Leaving the repository.${NC}"
-	else
+	mod=0
+
+	# Check for modified files
+	if [ $(git status | grep modified -c) -ne 0 ]
+	then
+		mod=1
+		echo -e "${LIGHT_RED}There are some modified files. Leaving the repository.${NC}"
+	fi
+
+	# Check for untracked files
+	if [ $(git status | grep Untracked -c) -ne 0 ]
+	then
+		mod=1
+		echo -e "${LIGHT_RED}There are some untracked files. Leaving the repository.${NC}"
+	fi
+
+	# Check if everything is peachy keen
+	if [ $mod -eq 0 ]
+	then
 		echo -e "${LIGHT_GREEN}There are no changes. Pulling the repository.${NC}"
-		git pull
-  fi
+		git rebase origin ${BRANCH_NAME} 
+	fi
+	
 	echo -e "${LIGHT_BLUE}-------------------------------------------------------------------------------------------${NC}"
 
 done
