@@ -31,18 +31,16 @@ for DIR in ${GITDIR}/* ; do
   BEHIND=$(git rev-list HEAD.."${BRANCH_NAME}"@{upstream} 2>/dev/null | wc -l)
   echo -e "${BLUE}Behind = ${BEHIND// /}${NC}"
 
-	mod=0
+  mod=0
 
 	# Check for modified files
-	if [ $(git status | grep modified -c) -ne 0 ]
-	then
+	if [[ ! -z "$(git status --untracked-files=no --porcelain)" ]]; then 
 		mod=1
 		echo -e "${LIGHT_RED}There are some modified files.${NC}"
 	fi
 
 	# Check for untracked files
-	if [ $(git status | grep Untracked -c) -ne 0 ]
-	then
+	if [[ $mod -eq 0 ]] && [[ ! -z "$(git status --porcelain)" ]]; then  
 		mod=1
 		echo -e "${LIGHT_RED}There are some untracked files.${NC}"
 	fi
