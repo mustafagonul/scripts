@@ -1,13 +1,13 @@
 #!/bin/bash
 
-INSTALL_DIR=${HOME}/.local/bin
+. ./base.sh
 
 # Remove current links
 FILES=$(find ${INSTALL_DIR} -regex ".*\(mg-\).*\.\(sh\|py\)")
 
 for FILE in ${FILES}; do
 	if [[ -L ${FILE} ]]; then
-		echo "Deleting ${FILE}."
+		echo -e "${BLUE}Deleting ${RED}${FILE}${NC}"
 		rm -f ${FILE}
 	fi
 done

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-INSTALL_DIR=${HOME}/.local/bin
+. ./base.sh
 
 # Create install directory
 mkdir -p ${INSTALL_DIR}
 
 # Uninstall links
-source ./uninstall.sh
+. ./uninstall.sh
 
 # Looping directories
 for DIR in *; do
@@ -14,7 +14,7 @@ for DIR in *; do
 		continue
 	fi
 
-	echo "Directory: ${DIR}"
+	echo -e "${LIGHT_BLUE}Directory: ${LIGHT_RED}${DIR}${NC}"
 
 	FILES=$(find ${DIR} -regex ".*\.\(sh\|py\)")
 
@@ -27,7 +27,7 @@ for DIR in *; do
 		BASE=$(basename ${FILE})
 		LINK_NAME=${INSTALL_DIR}/mg-${BASE}
 
-		echo "Creating link : ${FILE} -> ${LINK_NAME}"
+		echo -e "${BLUE}Creating link : ${GREEN}${FILE}${NC} -> ${RED}${LINK_NAME}${NC}"
 
     ln -s -T ${TARGET} ${LINK_NAME}
 	done
