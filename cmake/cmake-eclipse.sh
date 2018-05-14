@@ -1,8 +1,7 @@
 #!/bin/bash
 
-cd ..
-
 project=${PWD##*/}
+
 
 mkdir ../${project}_eclipse
 cd ../${project}_eclipse
