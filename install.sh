@@ -25,7 +25,7 @@ for DIR in *; do
 
 		TARGET=$(pwd)/${FILE}
 		BASE=$(basename ${FILE})
-		LINK_NAME=${INSTALL_DIR}/mg-${BASE}
+		LINK_NAME=${INSTALL_DIR}/${INSTALL_PREFIX}-${BASE}
 
 		echo -e "${BLUE}Creating link : ${GREEN}${FILE}${NC} -> ${RED}${LINK_NAME}${NC}"
 
