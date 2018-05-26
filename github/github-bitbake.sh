@@ -16,9 +16,9 @@ fi
 pushd $GITHUB_DIR
 git clone https://github.com/openembedded/bitbake.git
 
-## Checking out 1.8.19
+## Checking out 1.38.0
 pushd bitbake
-git checkout 1.8.19
+git checkout 1.38.0
 
 ## Go back
 popd
