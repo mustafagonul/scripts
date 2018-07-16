@@ -11,12 +11,19 @@ LIGHT_GREEN='\033[1;32m'
 NC='\033[0m' # No Color
 
 for DIR in ${GITDIR}/* ; do
-	echo -e "${LIGHT_BLUE}-------------------------------------------------------------------------------------------${NC}"
-	BASE=$(basename ${DIR})
-	echo -e "${RED}Fetching ${BASE}...${NC}"
+  echo -e "${LIGHT_BLUE}-------------------------------------------------------------------------------------------${NC}"
+  BASE=$(basename ${DIR})
+  echo -e "${RED}Fetching ${BASE}...${NC}"
 
-	cd $DIR
-	git fetch --all --tag
+  cd $DIR
+
+  # Check for the .git directory
+  if [[ ! -d .git ]]; then
+    echo -e "${LIGHT_RED}${BASE} is not a repository!${NC}"
+    continue
+  fi
+
+  git fetch --all --tag
 
   BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null)
 
@@ -32,27 +39,27 @@ for DIR in ${GITDIR}/* ; do
 
   mod=0
 
-	# Check for modified files
-	if [[ ! -z "$(git status --untracked-files=no --porcelain)" ]]; then 
-		mod=1
-		echo -e "${LIGHT_RED}There are some modified files.${NC}"
-	fi
+  # Check for modified files
+  if [[ ! -z "$(git status --untracked-files=no --porcelain)" ]]; then 
+    mod=1
+    echo -e "${LIGHT_RED}There are some modified files.${NC}"
+  fi
 
-	# Check for untracked files
-	if [[ $mod -eq 0 ]] && [[ ! -z "$(git status --porcelain)" ]]; then  
-		mod=1
-		echo -e "${LIGHT_RED}There are some untracked files.${NC}"
-	fi
+  # Check for untracked files
+  if [[ $mod -eq 0 ]] && [[ ! -z "$(git status --porcelain)" ]]; then  
+    mod=1
+    echo -e "${LIGHT_RED}There are some untracked files.${NC}"
+  fi
 
-	# Check if everything is peachy keen
-	if [ $mod -eq 0 ]
-	then
-		echo -e "${LIGHT_GREEN}There are no changes.${NC}"
-		git rebase origin/${BRANCH_NAME} 
-	fi
+  # Check if everything is peachy keen
+  if [ $mod -eq 0 ]
+  then
+    echo -e "${LIGHT_GREEN}There are no changes.${NC}"
+    git rebase origin/${BRANCH_NAME} 
+  fi
 
-	
-	echo -e "${LIGHT_BLUE}-------------------------------------------------------------------------------------------${NC}"
+  
+  echo -e "${LIGHT_BLUE}-------------------------------------------------------------------------------------------${NC}"
 
 done
 
